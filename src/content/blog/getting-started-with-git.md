@@ -1,3 +1,9 @@
+---
+title: Getting Started with Git
+date: 2026-02-13
+description: A beginner's guide to Git version control covering installation, configuration, essential commands, and best practices.
+---
+
 Git is a distributed version control system that helps you track changes in your code and collaborate with others. This guide covers the essential commands to get you started.
 
 ## Installation

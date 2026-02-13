@@ -2,12 +2,18 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Section from '../components/Section'
 import Card from '../components/Card'
+import { parseFrontmatter, Frontmatter } from '../utils/frontmatter'
 
 interface GitHubFile {
   name: string
   size: number
   download_url: string
   type: string
+}
+
+interface PostEntry {
+  slug: string
+  meta: Frontmatter
 }
 
 function formatSize(bytes: number): string {
@@ -20,14 +26,31 @@ function getExtension(filename: string): string {
   return filename.split('.').pop()?.toUpperCase() || ''
 }
 
+// Import all markdown files
+const blogModules = import.meta.glob('../content/blog/*.md', { query: '?raw', eager: true }) as Record<string, { default: string }>
+const updateModules = import.meta.glob('../content/updates/*.md', { query: '?raw', eager: true }) as Record<string, { default: string }>
+
+function loadPosts(modules: Record<string, { default: string }>): PostEntry[] {
+  return Object.entries(modules)
+    .map(([path, module]) => {
+      const slug = path.split('/').pop()?.replace('.md', '') || ''
+      const { meta } = parseFrontmatter(module.default)
+      return { slug, meta }
+    })
+    .sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
+}
+
 function Home() {
   const [downloads, setDownloads] = useState<GitHubFile[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
+  const updates = loadPosts(updateModules)
+  const blogPosts = loadPosts(blogModules)
+
   useEffect(() => {
-    const repo = 'zhijiangchang/zhijiangchang.github.io'
-    const folder = 'downloads'
+    const repo = 'zhijiangchang-create/zhijiangchang.github.io'
+    const folder = 'public/downloads'
 
     fetch(`https://api.github.com/repos/${repo}/contents/${folder}`)
       .then((res) => {
@@ -47,28 +70,9 @@ function Home() {
       })
   }, [])
 
-  const updates = [
-    {
-      slug: 'welcome',
-      title: 'Welcome',
-      date: '2026-02-13',
-      description: 'Welcome to my personal website!',
-    },
-  ]
-
-  const blogPosts = [
-    {
-      slug: 'getting-started-with-git',
-      title: 'Getting Started with Git',
-      date: '2026-02-13',
-      description:
-        "A beginner's guide to Git version control covering installation, configuration, essential commands, and best practices.",
-    },
-  ]
-
   const links = [
     {
-      href: 'https://github.com/zhijiangchang',
+      href: 'https://github.com/zhijiangchang-create',
       label: 'GitHub',
       description: 'My code repositories',
     },
@@ -100,16 +104,16 @@ function Home() {
           <div className="space-y-4">
             {updates.map((update) => (
               <article key={update.slug}>
-                <time className="text-sm text-slate-500">{update.date}</time>
+                <time className="text-sm text-slate-500">{update.meta.date}</time>
                 <h3 className="text-lg font-medium mt-1">
                   <Link
                     to={`/updates/${update.slug}`}
                     className="text-sky-700 hover:text-sky-600 transition-colors"
                   >
-                    {update.title}
+                    {update.meta.title}
                   </Link>
                 </h3>
-                <p className="text-slate-600 mt-1">{update.description}</p>
+                <p className="text-slate-600 mt-1">{update.meta.description}</p>
               </article>
             ))}
           </div>
@@ -122,16 +126,16 @@ function Home() {
           <div className="space-y-4">
             {blogPosts.map((post) => (
               <article key={post.slug}>
-                <time className="text-sm text-slate-500">{post.date}</time>
+                <time className="text-sm text-slate-500">{post.meta.date}</time>
                 <h3 className="text-lg font-medium mt-1">
                   <Link
                     to={`/blog/${post.slug}`}
                     className="text-sky-700 hover:text-sky-600 transition-colors"
                   >
-                    {post.title}
+                    {post.meta.title}
                   </Link>
                 </h3>
-                <p className="text-slate-600 mt-1">{post.description}</p>
+                <p className="text-slate-600 mt-1">{post.meta.description}</p>
               </article>
             ))}
           </div>

@@ -3,43 +3,41 @@ import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import Card from '../components/Card'
-
-interface BlogMeta {
-  title: string
-  date: string
-  description: string
-}
-
-const blogMeta: Record<string, BlogMeta> = {
-  'getting-started-with-git': {
-    title: 'Getting Started with Git',
-    date: 'February 13, 2026',
-    description: "A beginner's guide to Git version control",
-  },
-}
+import { parseFrontmatter, formatDate, Frontmatter } from '../utils/frontmatter'
 
 function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
   const [content, setContent] = useState<string>('')
+  const [meta, setMeta] = useState<Frontmatter | null>(null)
   const [loading, setLoading] = useState(true)
-
-  const meta = slug ? blogMeta[slug] : null
 
   useEffect(() => {
     if (!slug) return
 
     import(`../content/blog/${slug}.md?raw`)
       .then((module) => {
-        setContent(module.default)
+        const { meta, content } = parseFrontmatter(module.default)
+        setMeta(meta)
+        setContent(content)
         setLoading(false)
       })
       .catch(() => {
-        setContent('# Not Found\n\nThis blog post could not be found.')
+        setContent('This blog post could not be found.')
         setLoading(false)
       })
   }, [slug])
 
-  if (!meta) {
+  if (loading) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-12">
+        <Card>
+          <p className="text-slate-500">Loading...</p>
+        </Card>
+      </div>
+    )
+  }
+
+  if (!meta || !meta.title) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-12">
         <Card>
@@ -60,17 +58,13 @@ function BlogPost() {
     <article className="max-w-3xl mx-auto px-4 py-12">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-slate-800 mb-2">{meta.title}</h1>
-        <time className="text-slate-500">{meta.date}</time>
+        <time className="text-slate-500">{formatDate(meta.date)}</time>
       </header>
 
       <Card>
-        {loading ? (
-          <p className="text-slate-500">Loading...</p>
-        ) : (
-          <div className="prose max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-          </div>
-        )}
+        <div className="prose max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+        </div>
       </Card>
 
       <footer className="mt-8">
