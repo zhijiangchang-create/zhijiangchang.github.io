@@ -1,6 +1,6 @@
 ---
 title: Getting Started with Git
-date: 2026-02-13
+date: 2018-10-03
 description: A beginner's guide to Git version control covering installation, configuration, essential commands, and best practices.
 ---
 
