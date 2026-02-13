@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import BlogPost from './pages/BlogPost'
+import UpdatePost from './pages/UpdatePost'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/updates/:slug" element={<UpdatePost />} />
         </Routes>
       </main>
       <Footer />

@@ -47,6 +47,15 @@ function Home() {
       })
   }, [])
 
+  const updates = [
+    {
+      slug: 'welcome',
+      title: 'Welcome',
+      date: '2026-02-13',
+      description: 'Welcome to my personal website!',
+    },
+  ]
+
   const blogPosts = [
     {
       slug: 'getting-started-with-git',
@@ -88,7 +97,22 @@ function Home() {
       {/* Updates */}
       <Section id="updates" title="Life Updates">
         <Card>
-          <p className="text-slate-600">Updates coming soon.</p>
+          <div className="space-y-4">
+            {updates.map((update) => (
+              <article key={update.slug}>
+                <time className="text-sm text-slate-500">{update.date}</time>
+                <h3 className="text-lg font-medium mt-1">
+                  <Link
+                    to={`/updates/${update.slug}`}
+                    className="text-sky-700 hover:text-sky-600 transition-colors"
+                  >
+                    {update.title}
+                  </Link>
+                </h3>
+                <p className="text-slate-600 mt-1">{update.description}</p>
+              </article>
+            ))}
+          </div>
         </Card>
       </Section>
 
