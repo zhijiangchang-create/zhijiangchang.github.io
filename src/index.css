@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-sky-100 via-sky-50 to-white min-h-screen;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-white/20;
+  }
+}
+
+/* Markdown content styles */
+.prose pre {
+  @apply bg-slate-800 text-slate-100 rounded-lg p-4 overflow-x-auto my-4;
+}
+
+.prose code {
+  @apply bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded text-sm;
+}
+
+.prose pre code {
+  @apply bg-transparent text-inherit p-0;
+}
+
+.prose h2 {
+  @apply text-xl font-semibold text-slate-800 mt-8 mb-4 border-b border-slate-200 pb-2;
+}
+
+.prose h3 {
+  @apply text-lg font-medium text-slate-700 mt-6 mb-3;
+}
+
+.prose p {
+  @apply text-slate-600 leading-relaxed mb-4;
+}
+
+.prose ul, .prose ol {
+  @apply my-4 pl-6 space-y-2;
+}
+
+.prose ul {
+  @apply list-disc;
+}
+
+.prose ol {
+  @apply list-decimal;
+}
+
+.prose li {
+  @apply text-slate-600;
+}
+
+.prose strong {
+  @apply font-semibold text-slate-800;
+}
