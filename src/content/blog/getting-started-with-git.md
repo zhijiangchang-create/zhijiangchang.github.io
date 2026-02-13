@@ -1,7 +1,7 @@
 ---
 title: Getting Started with Git
 date: 2018-10-03
-description: After being the system admin of BugZilla for more than a decade, I switch to GitHub. This is a beginner's guide to Git version control covering installation, configuration, essential commands, and best practices.
+description: After more than a decade managing BugZilla, I’ve moved to GitHub — and created a simple beginner’s guide to Git covering setup, key commands, and best practices.
 ---
 
 Git is a distributed version control system that helps you track changes in your code and collaborate with others. This guide covers the essential commands to get you started.
