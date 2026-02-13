@@ -1,7 +1,7 @@
 ---
 title: Great Success in ViSenze!
 date: 2025-09-30
-description: Finishing my responsibility in ViSenze after ViSenze was successfully acquired by Resolve AI, a U.S. hedge fund.
+description: Finishing my responsibility in ViSenze after ViSenze was successfully acquired by Resolve AI, a U.S. hedge fund. Family time!
 ---
 
 Acquisition of ViSenze: https://www.linkedin.com/company/visenze/posts/?feedView=all
